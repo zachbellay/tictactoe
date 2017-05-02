@@ -1,5 +1,5 @@
 # tictactoe
-## A Basic C++ Tic Tac Toe board game on the command line!:
+## A Basic C++ Tic Tac Toe board game on the command line:
 
 ### Configurable Board Size
 ![1](https://cloud.githubusercontent.com/assets/24536303/25605183/fc7240a8-2ebd-11e7-8157-8b8cc1b6bafe.png)
