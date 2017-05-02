@@ -2,14 +2,44 @@
 #include <cstdlib>
 #include <iostream>
 #include "board.h"
+using namespace std;
 int main(){
-	tictactoe::board b(5);
-	//b.insert_o(4);
-	// b.insert_o(9);
-	// b.insert_o(12);
-	// b.insert_o(16);
-	b.insert_o(20);
-	std::cout << b;
-	std::cout << b.o_win() << std::endl;
+	
+	int board_size;
+	bool x_turn = true;
+
+	cout << "2 Player Tic Tac Toe:" << endl;
+	cout << "How large should the board be? (Enter a whole number): ";
+	cin >> board_size;
+	tictactoe::board b(board_size);
+	while(!b.x_win() && !b.o_win()){
+		cout << string(50, '\n');
+		cout << b;
+		if(x_turn){
+			bool inserted = false;
+			while(!inserted){
+				int pos;
+				cout << "X, enter the position you want to insert at: ";
+				cin >> pos;
+				inserted = b.x_insert(pos);
+				x_turn = false;
+			}	
+		}else{
+			bool inserted = false;
+			while(!inserted){
+				int pos;
+				cout << "O, enter the position you want to insert at: ";
+				cin >> pos;
+				inserted = b.o_insert(pos);
+				x_turn = true;
+			}
+		}	
+		cout << b;
+		if(b.x_win()){
+			cout << "X has won!" << endl;
+		}else{
+			cout << "O has won!" << endl;
+		}
+	}
 	return EXIT_SUCCESS;
 }

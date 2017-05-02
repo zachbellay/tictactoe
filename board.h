@@ -3,37 +3,27 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
-#include <cassert>
+#include <iomanip>
 namespace tictactoe{
 	class board{
-		//Helper Functions
-		bool is_num(const std::string &s);
-		bool is_num(const std::string &s) const;
+		bool is_num(const std::string& s);
 	public: 
-		//Constructor
-		board(unsigned int board_size = 3);
-		~board();
-
-		//Constant Member Functions
+		board(int board_size = 3);
 		std::string get_item(int pos) const;
 		std::string get_item(int row, int col) const;
 		void print();
 		size_t get_size() const {return size;}
-		bool x_win() const;
-		bool o_win() const;
-
-		//Modification Member Functions
-		bool insert_o(int pos);
-		bool insert_o(int row, int col);
-		bool insert_x(int pos);
-		bool insert_x(int row, int col);
-
+		bool x_win();
+		bool o_win();
+		bool x_insert(int pos);
+		bool x_insert(int row, int col);
+		bool o_insert(int pos);
+		bool o_insert(int row, int col);
 
 	private:
 		std::string **b;
 		size_t size;
 	};
-
 	std::ostream& operator << (std::ostream& out, const board& b);
 }
 #endif

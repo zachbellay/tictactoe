@@ -1,39 +1,26 @@
 #include "board.h"
 #include <stdlib.h>
-#include <string>
 namespace tictactoe{
-	board::board(unsigned int board_size){
+	board::board(int board_size){
 		size = board_size;
-		b = new std::string*[size];
-		for(int i = 0; i < size; ++i){
-			b[i] = new std::string[size];
-			for(int j = 0; j < size; ++j){
-				std::string tmp = std::to_string(((i * size) + j));
-				b[i][j] = tmp;
+
+		b = new std::string*[board_size];
+		for(int i = 0; i < board_size; ++i)
+    		b[i] = new std::string[board_size];
+    	
+		for(int i = 0; i < board_size; ++i){
+			for(int j = 0; j < board_size; ++j){
+				std::string k = std::to_string(((i * board_size) + j));
+				b[i][j] = k;
 			}
 		}
 	}
+	bool board::is_num(const std::string& s){
+	    std::string::const_iterator it = s.begin();
+	    while (it != s.end() && std::isdigit(*it)) ++it;
+	    return !s.empty() && it == s.end();
+	}
 	
-	board::~board(){
-		for(int i = 0; i < size; ++i){
-			delete[] b[i];
-		}
-		delete[] b;
-		size = 0;
-	}
-
-	bool board::is_num(const std::string &s){
-		std::string::const_iterator it = s.begin();
-		while(it != s.end() && std::isdigit(*it)) ++it;
-		return !s.empty() && it == s.end();
-	}
-
-	bool board::is_num(const std::string &s) const{
-		std::string::const_iterator it = s.begin();
-		while(it != s.end() && std::isdigit(*it)) ++it;
-		return !s.empty() && it == s.end();
-	}
-
 	std::string board::get_item(int pos) const{
 		int row = pos / size;
 		int col = pos % size;
@@ -45,150 +32,154 @@ namespace tictactoe{
 	}
 
 	void board::print(){
-		for(int i = 0; i < size; ++i){
-			for(int j = 0; j < size; ++j){
-				std::cout << b[i][j] << " ";
+		for(int i = 0; i < get_size(); ++i){
+			for(int j = 0; j < get_size(); ++j){
+				std::cout << b[i][j];
 			}
-			std::cout << std::endl;
 		}
 	}
-	
-	bool board::x_win() const{
+
+	bool board::x_win(){
 		//Horizontal Win
 		for(int i = 0; i < size; ++i){
 			for(int j = 0; j < size; ++j){
-				std::string tmp = b[i][j];
-				if(tmp.compare("X") || is_num(b[i][j]))
+				if(b[i][j] != "X")
 					break;
-				return true;
+				if(j == (size-1))
+					return true;
 			}
 		}
 
 		//Vertical Win
-		for(int i = 0; i < size; ++i){
-			for(int j = 0; i < size; ++j){
-				std::string tmp = b[j][i];
-				if(tmp.compare("X") || is_num(b[j][i]))
+		for(int i = 0; i < size; ++i)
+			for(int j = 0; j < size; ++j){
+				if(b[j][i] != "X")
 					break;
-				return true;
+				if(j == (size-1))
+					return true;
 			}
-		}
-
-		//Diagonal Win Top Left to Bottom Right
+		
+		//Top Left to Bottom Right Diagonal Win
 		for(int i = 0; i < size; ++i){
-			std::string tmp = b[i][i];
-			if(tmp.compare("X") || is_num(b[i][i]))
+			if(b[i][i] != "X")
 				break;
-			return true;
+			if(i == (size-1))
+				return true;
 		}
-
-		//Diagonal Win Top Right to Bottom Left
+ 
+		//Top Right to Bottom Left Diagonal Win
 		for(int i = 0; i < size; ++i){
-			
-			std::string tmp = b[i][(size-1)-i];
-			if(tmp.compare("X") || is_num(b[i][(size-1)-i]))
+			if(b[(size-1)-i][i] != "X")
 				break;
-			return true;
+			if(i == (size-1))
+				return true;
 		}
 
 		return false;
 	}
 
-	bool board::o_win() const{
+	bool board::o_win(){
 		//Horizontal Win
 		for(int i = 0; i < size; ++i){
 			for(int j = 0; j < size; ++j){
-				std::string tmp = b[i][j];
-				if(tmp.compare("O") || is_num(b[i][j]))
+				if(b[i][j] != "O")
 					break;
-				return true;
+				if(j == (size-1))
+					return true;
 			}
 		}
 
 		//Vertical Win
-		for(int i = 0; i < size; ++i){
-			for(int j = 0; i < size; ++j){
-				std::string tmp = b[j][i];
-				if(tmp.compare("O") || is_num(b[j][i]))
+		for(int i = 0; i < size; ++i)
+			for(int j = 0; j < size; ++j){
+				if(b[j][i] != "O")
 					break;
-				return true;
+				if(j == (size-1))
+					return true;
 			}
-		}
-
-		//Diagonal Win Top Left to Bottom Right
+		
+		//Top Left to Bottom Right Diagonal Win
 		for(int i = 0; i < size; ++i){
-			std::string tmp = b[i][i];
-			if(tmp.compare("O") || is_num(b[i][i]))
+			if(b[i][i] != "O")
 				break;
-			return true;
+			if(i == (size-1))
+				return true;
 		}
-
-		//Diagonal Win Top Right to Bottom Left
+ 
+		//Top Right to Bottom Left Diagonal Win
 		for(int i = 0; i < size; ++i){
-			
-			std::string tmp = b[i][(size-1)-i];
-			if(tmp.compare("O") || is_num(b[i][(size-1)-i]))
+			if(b[(size-1)-i][i] != "O")
 				break;
-			return true;
+			if(i == (size-1))
+				return true;
 		}
 
 		return false;
 	}
 
-	bool board::insert_o(int pos){
-		assert(pos < (size*size));
+	bool board::x_insert(int pos){
 		int row = pos / size;
 		int col = pos % size;
-		if(!is_num(b[row][col])){
-			return false;
-		}else{
-			b[row][col] = "O";
+		if(is_num(b[row][col])){
+			b[row][col] = "X";
 			return true;
-		}
+		} 
+		return false;
 	}
 
-	bool board::insert_o(int row, int col){
-		int pos = ((row * size) + col);
-		assert(pos < (size*size));
-		if(!is_num(b[row][col])){
-			return false;
-		}else{
-			b[row][col] = "O";
+	bool board::x_insert(int row, int col){
+		if(is_num(b[row][col])){
+			b[row][col] = "X";
 			return true;
-		}
+		} 
+		return false;
 	}
 
-	bool board::insert_x(int pos){
-		assert(pos < (size*size));
+	bool board::o_insert(int pos){
 		int row = pos / size;
 		int col = pos % size;
-		if(!is_num(b[row][col])){
-			return false;
-		}else{
-			b[row][col] = "X";
+		if(is_num(b[row][col])){
+			b[row][col] = "O";
 			return true;
-		}
+		} 
+		return false;
 	}
 
-	bool board::insert_x(int row, int col){
-		int pos = ((row * size) + col);
-		assert(pos < (size*size));
-
-		if(!is_num(b[row][col])){
-			return false;
-		}else{
+	bool board::o_insert(int row, int col){
+		if(is_num(b[row][col])){
 			b[row][col] = "X";
 			return true;
-		}
+		} 
+		return false;
 	}
 
 	std::ostream& operator << (std::ostream& out, const board& b){
-		for(int i = 0; i < b.get_size(); ++i){	
-			for(int j = 0; j < b.get_size(); ++j){
-				out << b.get_item(i, j) << " ";
-			}
+		for(int i = 0; i < b.get_size(); ++i){
 			out << std::endl;
+			for(int j = 0; j < b.get_size(); ++j){
+				out << "+---";
+			}
+			out << "+" << std::endl << "|";
+
+			for(int j = 0; j < b.get_size(); ++j){
+				std::string item = b.get_item(i,j);
+				int len = item.length();
+				if(len <= 1)
+					out <<std::setw(2)<< item << std::setw(2) << "|";
+				else if(len == 2)
+					out <<std::setw(1)<< item << std::setw(2) << "|";
+				else if (len == 3)
+					out <<std::setw(0)<< item << std::setw(1) << "|";
+			}
 		}
+
+		out << std::endl;
+		for(int j = 0; j < b.get_size(); ++j){
+			out << "+---";
+		}
+			out << "+";
+
+		out << std::endl;
 		return out;
 	}
 }
